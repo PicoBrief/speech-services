@@ -63,6 +63,10 @@
         "test:integration": "node --test --test-reporter=spec --test-reporter-destination=stdout --test-reporter=tap --test-reporter-destination=tests/results/integration.tap dist-test/tests/integration/*.test.js",
         "prepublishOnly": "npm run build"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/PicoBrief/speech-services.git"
+    },
     "engines": {
         "node": ">=18.0.0"
     },
