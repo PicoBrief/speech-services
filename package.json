@@ -1,0 +1,96 @@
+{
+    "name": "@pico-brief/speech-services",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Unified speech-to-text and text-to-speech library wrapping AssemblyAI, Azure, Cartesia, Deepgram, ElevenLabs, Google, OpenAI, PlayHT, Rev.ai, and Speechmatics",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./providers/assemblyai": {
+            "types": "./dist/providers/assemblyai/index.d.ts",
+            "import": "./dist/providers/assemblyai/index.js"
+        },
+        "./providers/azure": {
+            "types": "./dist/providers/azure/index.d.ts",
+            "import": "./dist/providers/azure/index.js"
+        },
+        "./providers/cartesia": {
+            "types": "./dist/providers/cartesia/index.d.ts",
+            "import": "./dist/providers/cartesia/index.js"
+        },
+        "./providers/deepgram": {
+            "types": "./dist/providers/deepgram/index.d.ts",
+            "import": "./dist/providers/deepgram/index.js"
+        },
+        "./providers/elevenlabs": {
+            "types": "./dist/providers/elevenlabs/index.d.ts",
+            "import": "./dist/providers/elevenlabs/index.js"
+        },
+        "./providers/google": {
+            "types": "./dist/providers/google/index.d.ts",
+            "import": "./dist/providers/google/index.js"
+        },
+        "./providers/openai": {
+            "types": "./dist/providers/openai/index.d.ts",
+            "import": "./dist/providers/openai/index.js"
+        },
+        "./providers/playht": {
+            "types": "./dist/providers/playht/index.d.ts",
+            "import": "./dist/providers/playht/index.js"
+        },
+        "./providers/revai": {
+            "types": "./dist/providers/revai/index.d.ts",
+            "import": "./dist/providers/revai/index.js"
+        },
+        "./providers/speechmatics": {
+            "types": "./dist/providers/speechmatics/index.d.ts",
+            "import": "./dist/providers/speechmatics/index.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "pretest": "tsc -p tsconfig.test.json",
+        "test": "node --test dist-test/tests/unit/*.test.js dist-test/tests/unit/providers/*.test.js",
+        "pretest:integration": "tsc -p tsconfig.test.json && mkdir -p tests/results",
+        "test:integration": "node --test --test-reporter=spec --test-reporter-destination=stdout --test-reporter=tap --test-reporter-destination=tests/results/integration.tap dist-test/tests/integration/*.test.js",
+        "prepublishOnly": "npm run build"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "keywords": [
+        "speech-to-text",
+        "text-to-speech",
+        "stt",
+        "tts",
+        "assemblyai",
+        "azure",
+        "cartesia",
+        "deepgram",
+        "elevenlabs",
+        "google",
+        "openai",
+        "playht",
+        "revai",
+        "speechmatics",
+        "transcription",
+        "speech-synthesis"
+    ],
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^22.0.0",
+        "dotenv": "^17.3.1",
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@pico-brief/audio-duration": "^1.0.0"
+    }
+}
