@@ -5,3 +5,4 @@ dist-test/
 *.tsbuildinfo
 tests/results/
 .idea/
+.DS_Store
