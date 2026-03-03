@@ -154,6 +154,39 @@ const languages = await client.detectLocales({
 });
 ```
 
+## Transcript Snippets
+
+`groupWordsToSnippets` groups word-level timestamps from a transcription result into readable, time-bounded snippets — useful for subtitles, chunked display, or downstream processing.
+
+```typescript
+import { groupWordsToSnippets } from "@pico-brief/speech-services";
+
+const result = await client.transcribe({
+    provider: "openai",
+    audio: audioBuffer,
+});
+
+const snippets = groupWordsToSnippets(result.words);
+// [
+//   { text: "Hello how are you", time: 0.0, duration: 1.2 },
+//   { text: "I'm doing well thanks", time: 2.1, duration: 0.9 },
+//   ...
+// ]
+```
+
+A new snippet boundary is created when:
+- The gap between consecutive words exceeds `gap` seconds (default: **0.4s** — natural pause boundary)
+- The current snippet already spans more than `existingDuration` seconds (default: **10s** — prevents excessively long snippets)
+
+Both thresholds are configurable:
+
+```typescript
+const snippets = groupWordsToSnippets(result.words, {
+    gap: 0.6,              // more tolerant of pauses
+    existingDuration: 5,   // shorter snippets
+});
+```
+
 ## Error Handling
 
 All errors are thrown as `SpeechServiceError` with structured fields:

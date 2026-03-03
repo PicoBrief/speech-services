@@ -218,6 +218,24 @@ export interface TranscribeResult {
     duration: number;
 }
 
+// ─── Transcript Snippets ────────────────────────────────────────────────────
+
+export interface TranscriptSnippet {
+    /** Joined text of all words in the snippet */
+    text: string;
+    /** Start time of the first word in seconds */
+    time: number;
+    /** Duration from first word start to last word end in seconds */
+    duration: number;
+}
+
+export interface GroupWordsOptions {
+    /** Gap threshold in seconds between words to start a new snippet. Default: 0.4 */
+    gap?: number;
+    /** Max snippet duration in seconds before forcing a new snippet. Default: 10 */
+    existingDuration?: number;
+}
+
 // ─── Voice Info ─────────────────────────────────────────────────────────────
 
 export interface VoiceInfo {

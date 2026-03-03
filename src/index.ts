@@ -12,6 +12,9 @@ export { SpeechServiceError } from "./errors.js";
 export { VoiceCache } from "./voice-cache.js";
 export { resolveVoice } from "./voice-resolver.js";
 
+// ─── Utilities ──────────────────────────────────────────────────────────────
+export { groupWordsToSnippets } from "./utils.js";
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 export type {
     // Client
@@ -28,6 +31,9 @@ export type {
     PlayHTConfig,
     RevAIConfig,
     SpeechmaticsConfig,
+    // Transcript snippets
+    TranscriptSnippet,
+    GroupWordsOptions,
     // Transcribe
     TranscribeParams,
     TranscribeResult,

@@ -1,4 +1,5 @@
 import { SpeechServiceError } from "./errors.js";
+import type { TranscriptSnippet, GroupWordsOptions } from "./types.js";
 
 // ─── Polling ────────────────────────────────────────────────────────────────
 
@@ -116,4 +117,59 @@ export function detectFormatFromString(format: string): string {
     if (lower.includes("flac")) return "flac";
     if (lower.includes("alaw") || lower.includes("mulaw") || lower.includes("ulaw")) return "wav";
     return "mp3";
+}
+
+// ─── Transcript Snippet Grouping ─────────────────────────────────────────────
+
+/**
+ * Groups a flat list of timed words into transcript snippets for display and chunking.
+ * A new snippet is started when either:
+ * - There is a gap of more than `gap` seconds between the previous word's end and this word's start
+ *   (natural pause boundary), or
+ * - The current group already spans more than `existingDuration` seconds (prevents excessively long snippets).
+ *
+ * These thresholds mirror common subtitle segmentation heuristics and keep snippet lengths
+ * readable while preserving natural speech boundaries.
+ */
+export function groupWordsToSnippets(
+    words: { text: string; startTime: number; endTime: number }[],
+    options?: GroupWordsOptions,
+): TranscriptSnippet[] {
+    if (words.length === 0) return [];
+
+    const gapThreshold = options?.gap ?? 0.4;
+    const maxDuration = options?.existingDuration ?? 10;
+
+    const snippets: TranscriptSnippet[] = [];
+    let group: typeof words = [];
+
+    for (const word of words) {
+        if (group.length === 0) {
+            group.push(word);
+            continue;
+        }
+        const prevWord = group[group.length - 1];
+        const gap = word.startTime - prevWord.endTime;
+        const existingDuration = prevWord.endTime - group[0].startTime;
+
+        if (gap > gapThreshold || existingDuration > maxDuration) {
+            snippets.push(wordsToSnippet(group));
+            group = [word];
+        } else {
+            group.push(word);
+        }
+    }
+
+    if (group.length > 0) snippets.push(wordsToSnippet(group));
+
+    return snippets;
+}
+
+/** Collapses a group of words into a single snippet with joined text and timing from the group edges. */
+function wordsToSnippet(words: { text: string; startTime: number; endTime: number }[]): TranscriptSnippet {
+    return {
+        text: words.map(w => w.text).join(" "),
+        time: words[0].startTime,
+        duration: words[words.length - 1].endTime - words[0].startTime,
+    };
 }
