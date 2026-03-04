@@ -1,7 +1,8 @@
 import type { ClientConfig, SynthesizeParams, SynthesizeResult, VoiceInfo } from "./types.js";
 import { SpeechServiceError } from "./errors.js";
 import { VoiceCache } from "./voice-cache.js";
-import { resolveVoice } from "./voice-resolver.js";
+import { resolveVoice, validateRecommendedVoices, type RecommendedVoice } from "./voice-resolver.js";
+import { AZURE_RECOMMENDED_VOICES } from "./providers/azure/recommended-voices.js";
 import * as azure from "./providers/azure/index.js";
 import * as cartesia from "./providers/cartesia/index.js";
 import * as deepgram from "./providers/deepgram/index.js";
@@ -22,6 +23,7 @@ export async function synthesize(
             const cfg = requireConfig(config, "azure", "Azure");
             const resolvedVoice = await resolveVoiceForProvider(
                 cache, () => azure.fetchVoices(cfg), `azure:${cfg.region}`, params,
+                AZURE_RECOMMENDED_VOICES,
             );
             return azure.synthesize(cfg, params.text, resolvedVoice, params.languages?.[0], params.providerOptions);
         }
@@ -96,18 +98,22 @@ async function resolveVoiceForProvider(
     fetchFn: () => Promise<VoiceInfo[]>,
     cacheKey: string,
     params: SynthesizeParams,
+    recommendedVoices?: RecommendedVoice[],
 ): Promise<string> {
     let voices = cache.get(cacheKey);
     if (!voices) {
         voices = await fetchFn();
         cache.set(cacheKey, voices);
+        if (recommendedVoices) {
+            validateRecommendedVoices(voices, recommendedVoices);
+        }
     }
 
     const resolved = resolveVoice(voices, {
         voice: params.voice,
         language: params.languages?.[0],
         gender: params.gender,
-    });
+    }, recommendedVoices);
 
     return resolved.id;
 }
