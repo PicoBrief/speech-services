@@ -1,6 +1,6 @@
 # @pico-brief/speech-services
 
-Unified speech-to-text and text-to-speech library wrapping 10 provider APIs behind consistent interfaces. Zero external dependencies — Node.js 18+ built-ins only.
+Unified speech-to-text and text-to-speech library wrapping 11 provider APIs behind consistent interfaces. Zero external dependencies — Node.js 18+ built-ins only.
 
 ## Providers
 
@@ -12,6 +12,7 @@ Unified speech-to-text and text-to-speech library wrapping 10 provider APIs behi
 | Deepgram | Yes | Yes | Yes |
 | ElevenLabs | Yes | Yes | Yes |
 | Google | Yes | Yes | - |
+| Inworld | Yes | Yes | - |
 | OpenAI | Yes | Yes | Yes |
 | PlayHT | - | Yes | - |
 | Rev.ai | Yes | - | - |

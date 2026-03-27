@@ -8,6 +8,7 @@ import * as cartesia from "./providers/cartesia/index.js";
 import * as deepgram from "./providers/deepgram/index.js";
 import * as elevenlabs from "./providers/elevenlabs/index.js";
 import * as google from "./providers/google/index.js";
+import * as inworld from "./providers/inworld/index.js";
 import * as openai from "./providers/openai/index.js";
 import * as playht from "./providers/playht/index.js";
 
@@ -54,6 +55,13 @@ export async function synthesize(
                 cache, () => google.fetchVoices(cfg), "google", params,
             );
             return google.synthesize(cfg, params.text, resolvedVoice, params.languages?.[0], params.providerOptions);
+        }
+        case "inworld": {
+            const cfg = requireConfig(config, "inworld", "Inworld");
+            const resolvedVoice = await resolveVoiceForProvider(
+                cache, () => inworld.fetchVoices(cfg), "inworld", params,
+            );
+            return inworld.synthesize(cfg, params.text, resolvedVoice, params.languages?.[0], params.providerOptions);
         }
         case "openai": {
             const cfg = requireConfig(config, "openai", "OpenAI");

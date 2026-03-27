@@ -1,6 +1,6 @@
 {
     "name": "@pico-brief/speech-services",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "type": "module",
     "description": "Unified speech-to-text and text-to-speech library wrapping AssemblyAI, Azure, Cartesia, Deepgram, ElevenLabs, Google, OpenAI, PlayHT, Rev.ai, and Speechmatics",
     "main": "dist/index.js",
@@ -33,6 +33,10 @@
         "./providers/google": {
             "types": "./dist/providers/google/index.d.ts",
             "import": "./dist/providers/google/index.js"
+        },
+        "./providers/inworld": {
+            "types": "./dist/providers/inworld/index.d.ts",
+            "import": "./dist/providers/inworld/index.js"
         },
         "./providers/openai": {
             "types": "./dist/providers/openai/index.d.ts",

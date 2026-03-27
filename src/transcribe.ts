@@ -5,6 +5,7 @@ import * as azure from "./providers/azure/index.js";
 import * as deepgram from "./providers/deepgram/index.js";
 import * as elevenlabs from "./providers/elevenlabs/index.js";
 import * as google from "./providers/google/index.js";
+import * as inworld from "./providers/inworld/index.js";
 import * as openai from "./providers/openai/index.js";
 import * as revai from "./providers/revai/index.js";
 import * as speechmatics from "./providers/speechmatics/index.js";
@@ -30,6 +31,10 @@ export async function transcribe(config: ClientConfig, params: TranscribeParams)
         case "google": {
             const cfg = requireConfig(config, "google", "Google");
             return google.transcribe(cfg, params.audio, params.languages, params.providerOptions);
+        }
+        case "inworld": {
+            const cfg = requireConfig(config, "inworld", "Inworld");
+            return inworld.transcribe(cfg, params.audio, params.languages, params.providerOptions);
         }
         case "openai": {
             const cfg = requireConfig(config, "openai", "OpenAI");

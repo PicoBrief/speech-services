@@ -5,6 +5,7 @@ import * as cartesia from "./providers/cartesia/index.js";
 import * as deepgram from "./providers/deepgram/index.js";
 import * as elevenlabs from "./providers/elevenlabs/index.js";
 import * as google from "./providers/google/index.js";
+import * as inworld from "./providers/inworld/index.js";
 import * as openai from "./providers/openai/index.js";
 import * as playht from "./providers/playht/index.js";
 
@@ -29,6 +30,10 @@ export async function fetchVoices(config: ClientConfig, provider: FetchVoicesPro
         case "google": {
             const cfg = requireConfig(config, "google", "Google");
             return google.fetchVoices(cfg);
+        }
+        case "inworld": {
+            const cfg = requireConfig(config, "inworld", "Inworld");
+            return inworld.fetchVoices(cfg);
         }
         case "openai": {
             const cfg = requireConfig(config, "openai", "OpenAI");

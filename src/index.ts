@@ -27,6 +27,7 @@ export type {
     DeepgramConfig,
     ElevenLabsConfig,
     GoogleConfig,
+    InworldConfig,
     OpenAIConfig,
     PlayHTConfig,
     RevAIConfig,
@@ -44,6 +45,7 @@ export type {
     DeepgramTranscribeOptions,
     ElevenLabsTranscribeOptions,
     GoogleTranscribeOptions,
+    InworldTranscribeOptions,
     OpenAITranscribeOptions,
     RevAITranscribeOptions,
     SpeechmaticsTranscribeOptions,
@@ -57,6 +59,7 @@ export type {
     DeepgramSynthesizeOptions,
     ElevenLabsSynthesizeOptions,
     GoogleSynthesizeOptions,
+    InworldSynthesizeOptions,
     OpenAISynthesizeOptions,
     PlayHTSynthesizeOptions,
     // Detect Locales

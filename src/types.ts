@@ -25,6 +25,10 @@ export interface GoogleConfig {
     apiKey: string;
 }
 
+export interface InworldConfig {
+    apiKey: string;
+}
+
 export interface OpenAIConfig {
     apiKey: string;
 }
@@ -51,6 +55,7 @@ export interface ClientConfig {
     deepgram?: DeepgramConfig;
     elevenlabs?: ElevenLabsConfig;
     google?: GoogleConfig;
+    inworld?: InworldConfig;
     openai?: OpenAIConfig;
     playht?: PlayHTConfig;
     revai?: RevAIConfig;
@@ -102,6 +107,17 @@ export interface GoogleTranscribeOptions {
     sampleRateHertz?: number;
 }
 
+export interface InworldTranscribeOptions {
+    /** STT model in provider/model format. Default: "groq/whisper-large-v3". Options: "inworld/inworld-stt-1" (WebSocket only), "assemblyai/*" */
+    modelId?: string;
+    /** Audio encoding. Default: "AUTO_DETECT". Options: "LINEAR16", "MP3", "OGG_OPUS", "FLAC" */
+    audioEncoding?: string;
+    /** Sample rate in Hz. Default: 16000 */
+    sampleRateHertz?: number;
+    /** Include word-level timestamps. Default: true */
+    includeWordTimestamps?: boolean;
+}
+
 export interface OpenAITranscribeOptions {
     /** STT model. Default: "whisper-1". Options: "whisper-1", "gpt-4o-transcribe", "gpt-4o-mini-transcribe" */
     model?: string;
@@ -135,7 +151,7 @@ export interface SpeechmaticsTranscribeOptions {
     timeout?: number;
 }
 
-export type TranscribeProvider = "assemblyai" | "azure" | "deepgram" | "elevenlabs" | "google" | "openai" | "revai" | "speechmatics";
+export type TranscribeProvider = "assemblyai" | "azure" | "deepgram" | "elevenlabs" | "google" | "inworld" | "openai" | "revai" | "speechmatics";
 
 export type TranscribeParams =
     | ({
@@ -172,6 +188,13 @@ export type TranscribeParams =
             /** BCP-47 language codes. First is primary, rest are alternatives (up to 3 extra). Required by Google — defaults to ["en-US"]. */
             languages?: string[];
             providerOptions?: GoogleTranscribeOptions;
+        })
+    | ({
+            provider: "inworld";
+            audio: Buffer | string;
+            /** BCP-47 language code. Only the first element is used. Omit for auto-detection. */
+            languages?: string[];
+            providerOptions?: InworldTranscribeOptions;
         })
     | ({
             provider: "openai";
@@ -253,7 +276,7 @@ export interface VoiceInfo {
 
 // ─── Synthesize (Text-to-Speech) ────────────────────────────────────────────
 
-export type SynthesizeProvider = "azure" | "cartesia" | "deepgram" | "elevenlabs" | "google" | "openai" | "playht";
+export type SynthesizeProvider = "azure" | "cartesia" | "deepgram" | "elevenlabs" | "google" | "inworld" | "openai" | "playht";
 
 export interface AzureSynthesizeOptions {
     /** Azure output format string. Default: "audio-24khz-160kbitrate-mono-mp3" */
@@ -312,6 +335,21 @@ export interface GoogleSynthesizeOptions {
     speakingRate?: number;
     /** Pitch in semitones (-20 to 20). Default: 0 */
     pitch?: number;
+}
+
+export interface InworldSynthesizeOptions {
+    /** TTS model. Default: "inworld-tts-1.5-max". Options: "inworld-tts-1.5-max", "inworld-tts-1.5-mini" */
+    modelId?: string;
+    /** Audio encoding. Default: "MP3". Options: "MP3", "LINEAR16", "OGG_OPUS", "ALAW", "MULAW", "FLAC", "PCM", "WAV" */
+    audioEncoding?: string;
+    /** Sample rate in Hz (8000 to 48000). */
+    sampleRateHertz?: number;
+    /** Bit rate in bps for compressed formats. */
+    bitRate?: number;
+    /** Speaking rate (0.5 to 1.5). Default: 1.0 */
+    speakingRate?: number;
+    /** Temperature for variation (0 to 2). Default: 1.0 */
+    temperature?: number;
 }
 
 export interface OpenAISynthesizeOptions {
@@ -378,6 +416,14 @@ export type SynthesizeParams =
             gender?: "male" | "female";
             languages?: string[];
             providerOptions?: GoogleSynthesizeOptions;
+        })
+    | ({
+            provider: "inworld";
+            text: string;
+            voice?: string;
+            gender?: "male" | "female";
+            languages?: string[];
+            providerOptions?: InworldSynthesizeOptions;
         })
     | ({
             provider: "openai";
