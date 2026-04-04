@@ -46,6 +46,9 @@ export async function sampleAndDetect(
             throw new SpeechServiceError("Failed to determine audio duration", "INVALID_INPUT");
         }
 
+        // Derive extension from input path for clip extraction (-c copy needs matching container)
+        const inputExt = inputPath.split(".").pop() ?? "wav";
+
         // Build sampling ranges
         const ranges = buildSamplingRanges(duration);
 
@@ -53,7 +56,7 @@ export async function sampleAndDetect(
         const results: Map<string, number>[] = [];
 
         for (const range of ranges) {
-            const clipPath = tempPath("clip.wav");
+            const clipPath = tempPath(`clip.${inputExt}`);
             tempFiles.push(clipPath);
 
             try {
@@ -103,9 +106,7 @@ async function extractClip(
         "-ss", formatTimestamp(start),
         "-to", formatTimestamp(end),
         "-i", inputPath,
-        "-acodec", "pcm_s16le",
-        "-ar", "16000",
-        "-ac", "1",
+        "-c", "copy",
         outputPath,
     ]);
 }
