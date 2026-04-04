@@ -64,8 +64,8 @@ export async function sampleAndDetect(
                 const clipBuffer = readFileSync(clipPath);
                 const clipResult = await detectFn(clipBuffer);
                 results.push(clipResult);
-            } catch {
-                // Skip clips that fail to extract or detect
+            } catch (e) {
+                console.error(`[sampleAndDetect] Clip ${range.start.toFixed(1)}s-${range.end.toFixed(1)}s failed:`, e instanceof Error ? e.message : String(e));
             }
         }
 
