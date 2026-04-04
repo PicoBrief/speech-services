@@ -38,7 +38,7 @@ export async function transcribe(
     // Step 2: Submit transcription
     const body: Record<string, unknown> = {
         audio_url: audioUrl,
-        speech_model: speechModel,
+        speech_models: [speechModel],
     };
 
     if (languages && languages.length > 1) {
