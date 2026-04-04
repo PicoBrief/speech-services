@@ -53,7 +53,7 @@ export async function sampleAndDetect(
         const results: Map<string, number>[] = [];
 
         for (const range of ranges) {
-            const clipPath = tempPath("clip.mp3");
+            const clipPath = tempPath("clip.wav");
             tempFiles.push(clipPath);
 
             try {
@@ -103,7 +103,9 @@ async function extractClip(
         "-ss", formatTimestamp(start),
         "-to", formatTimestamp(end),
         "-i", inputPath,
-        "-c", "copy",
+        "-acodec", "pcm_s16le",
+        "-ar", "16000",
+        "-ac", "1",
         outputPath,
     ]);
 }
